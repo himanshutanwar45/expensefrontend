@@ -64,6 +64,8 @@ const Expenses = ({ setProgress, getExpenses, getexpenses, addExpenses, showAler
     //////////////////////   END /////////////////////////
 
 
+
+
     return (
         <>
             <div className="container p-2" >
@@ -88,9 +90,6 @@ const Expenses = ({ setProgress, getExpenses, getexpenses, addExpenses, showAler
                                                     {item.totalExpense}</strong> </p>
                                             </div>
                                         </div>
-                                        
-
-
                                     )
                                 })
 
