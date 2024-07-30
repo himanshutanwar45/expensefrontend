@@ -3,6 +3,7 @@ import {
     //LOGIN_DETAILS,
     GETEXPENSES,
     CURRENTDATEEXPENSE,
+    REPORTDATEGENERATION,
     FETCH_ERRORS
     
 } from './actionType'
@@ -71,3 +72,26 @@ export const currentDateExpense = (date) => async(dispatch)=>{
         dispatch({type: FETCH_ERRORS,payload: error.response.data})
     }
 }
+
+
+//Route 5 :::::::::::::::::::::::Get Expense Details with date ::::::::::::::::::::: FROM RReports - Route 1
+export const getDateGeneration = (fromDate, toDate) => async (dispatch)=>{
+    try{
+        const token = localStorage ? localStorage.getItem('token') : null;
+
+        const response = await fetch(`${host}/api/expense/report/dategeneration`,{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json',
+                'auth-token':token
+            },
+            body: JSON.stringify({fromDate:fromDate, toDate:toDate})
+        });
+
+        const json = await response.json();
+        dispatch({type:REPORTDATEGENERATION,payload:json});
+
+    }catch(error){
+        dispatch({type: FETCH_ERRORS,payload: error.response.data})
+    }
+};

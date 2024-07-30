@@ -2,13 +2,15 @@
 import {
     GETEXPENSES,
     FETCH_ERRORS,
-    CURRENTDATEEXPENSE
+    CURRENTDATEEXPENSE,
+    REPORTDATEGENERATION
 } from '../action/actionType'
 
 
 const initialState = {
     getexpenses: [],
     currentdateexpense:[],
+    dategeneration:[],
     error: []
 }
 
@@ -26,6 +28,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentdateexpense: action.payload
+            }
+
+        case REPORTDATEGENERATION:
+            return {
+                ...state,
+                dategeneration: action.payload
             }
 
         case FETCH_ERRORS:
