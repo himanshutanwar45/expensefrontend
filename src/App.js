@@ -12,6 +12,7 @@ import Login from './components/Login';
 import { useState } from 'react';
 import Expenses from './components/Expenses';
 import Profile from './components/Profile';
+import Reports from './components/Reports';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
         <Route exact path = '/' element={<Login showAlert={showAlert} setProgress={setProgress}></Login>}></Route>
         <Route exact path = '/expense' element={<Expenses showAlert={showAlert} setProgress={setProgress}></Expenses>}></Route>
         <Route exact path = '/profile' element={<Profile showAlert={showAlert} setProgress={setProgress}></Profile>}></Route>
+        <Route exact path = '/reports' element={<Reports setProgress={setProgress}></Reports>}></Route>
       </Routes>
       </Router>
     </>
