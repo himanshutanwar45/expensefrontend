@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
+import Signup from './Signup';
 
-const Login = ({showAlert}) => {
+const Login = (props) => {
     useEffect(()=>{
         
         // eslint-disable-next-line
@@ -9,17 +10,26 @@ const Login = ({showAlert}) => {
 
     const history = useNavigate();
     const host = process.env.REACT_APP_HOST;
+
+    const localemail = localStorage ? localStorage.getItem('email'):null;
+    const localpassword = localStorage ? localStorage.getItem('password'):null;
+    const localrememberMe = localStorage ? localStorage.getItem('rememberMe'):null;
     
     ////////////////// For set the value in the text box////////////////////////////////////////////////
     const [credentials, setCredentials] = useState({
-        email:"",
-        password:""    
+        email:localemail || "",
+        password:localpassword || "" ,
+        rememberMe:JSON.parse(localrememberMe) || false,   
     });
 
-    const {email, password} = credentials;
+    const {email, password, rememberMe} = credentials;
 
     const onChangeMethod = (e) =>{
-        setCredentials({...credentials,[e.target.name]:e.target.value})
+        const { name, value, type, checked } = e.target;
+
+        const newValue = type === 'checkbox' ? checked : value;
+
+        setCredentials({ ...credentials, [name]: newValue });
     }
 
     ////////////////////// END///////////////////////////////////////////////////////////////////
@@ -39,10 +49,15 @@ const Login = ({showAlert}) => {
             const {success, error} = result;          
             if(success){
                 localStorage.setItem('token',error)
+                if(rememberMe){
+                    localStorage.setItem('email',email);
+                    localStorage.setItem('password',password);
+                    localStorage.setItem('rememberMe', rememberMe);
+                }
                 history('/expense')
             }
             else{
-                showAlert('error',error)
+                props.showAlert('error',error)
             }
         }catch(error){
             throw error.message
@@ -51,6 +66,18 @@ const Login = ({showAlert}) => {
     }
 
     ////////////////////// END////////////////////////////////////////////////////////////////////////
+
+    ///////////////////// Signup ////////////////////////////////////////////////////////////////////
+
+    const ref = useRef(null);
+
+    const openSignUp = () =>{
+        ref.current.click();
+    }
+
+    ////////////////////// END ///////////////////////////////////////////////////////////////////
+
+
     return (
         <>
             <div className="container" >
@@ -65,7 +92,7 @@ const Login = ({showAlert}) => {
                         </div>
                         <div className="mb-3">
                             <div className="form-check">
-                                <input className="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+                                <input className="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" onChange={onChangeMethod} value={rememberMe} checked={rememberMe}/>
                                 <label className="form-check-label" htmlFor="flexCheckChecked">
                                     Remember Me
                                 </label>
@@ -74,12 +101,13 @@ const Login = ({showAlert}) => {
                         <div className='mb-3 d-flex justify-content-between'>
                             <button type="button" className="btn btn-outline-secondary" onClick={handleClickLogin}>Login</button>
                             <Link className="nav-link text-primary" type="submit" to="/"> Lost Password </Link>
-                            <Link className="nav-link text-primary" type="submit" to="/"> SignUp </Link>
+                            <button className="nav-link text-primary" type="submit" onClick={openSignUp}> SignUp </button>
                         </div>
                     </div>
                     
                 </div>
             </div>
+            <Signup clickbtn={ref} showAlert = {props.showAlert}></Signup>
         </>
     )
 }

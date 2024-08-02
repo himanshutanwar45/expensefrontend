@@ -95,3 +95,22 @@ export const getDateGeneration = (fromDate, toDate) => async (dispatch)=>{
         dispatch({type: FETCH_ERRORS,payload: error.response.data})
     }
 };
+
+//Route 6 ::::::::::::::::::::::: Add New Users ::::::::::::::::::::::::::::::::::::::: FROM RLogin - Route - 1 
+export const addNewUser = (firstName, lastName, email, mobile, password, conPass) => async (dispatch) => {
+    try{
+        const response = await fetch(`${host}/api/auth/createuser`,{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({firstName:firstName, lastName:lastName, email:email, mobile:mobile, password:password, conPass:conPass})
+        });
+
+        const json = await response.json();
+        return json;
+
+    }catch(error){
+        dispatch({type: FETCH_ERRORS,payload: error.response.data})
+    }
+}

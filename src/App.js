@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Expenses from './components/Expenses';
 import Profile from './components/Profile';
 import Reports from './components/Reports';
+import './App.css'
 
 function App() {
 

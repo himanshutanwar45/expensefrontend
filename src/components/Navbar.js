@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import {userData} from './Token'
+import { jwtDecode } from 'jwt-decode';
 
 const Navbar = () => {
 
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+    let userData = token ? jwtDecode(token) : null;
     let fullName = userData ? userData.user.fullName : null;
 
     useEffect(()=>{
@@ -11,10 +13,11 @@ const Navbar = () => {
     },[])
 
 
+
     /////////////////// Logout User /////////////////////////////////////////////////
     const handledLogout = () => {
         localStorage.removeItem('token')
-        userData={}
+        userData = {}
     }
     //////////////////// END ///////////////////////////////////////////////////////
     return (
@@ -61,9 +64,6 @@ const Navbar = () => {
                             </ul>  
                         </>
                     }
-
-                    
-
                     </div>
                 </div>
             </nav>

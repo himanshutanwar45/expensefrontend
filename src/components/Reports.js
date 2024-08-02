@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { getDateGeneration, getExpenses } from '../state/action/action'
+import {
+    getDateGeneration //Route 5 
+    , getExpenses //Route 2
+} from '../state/action/action'
 
 const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, getexpenses }) => {
 
@@ -56,21 +59,22 @@ const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, 
 
     const { fromDate, toDate } = credentials;
 
-    const onChangeMethod = async(e) => {
+    const onChangeMethod = async (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
     ////////////////// End ///////////////////////////////////////////////////////////////
 
-
     const handleClick = async () => {
-        setProgress(40)
+        setProgress(40);
         try {
-            await getDateGeneration(fromDate, toDate)
+            await getDateGeneration(fromDate, toDate);
         } catch (error) {
             throw error.message;
+        } finally {
+            setProgress(100);
         }
-        setProgress(100)
+
     }
 
     return (
@@ -90,7 +94,8 @@ const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, 
                     <div className='mb-3 my-2'>
                         <div className='border border-secondary-subtle p-5 bg-white shadow rounded-3'>
                             <h5 className='text-center'> Current Expense </h5>
-                            {!getexpenses || getexpenses.length === "0" ? <p> No data avaliable</p> :
+                            {!getexpenses || getexpenses.length === "0" ? <p className="card-text placeholder-glow">
+                                <span className="placeholder col-12"></span></p> :
                                 (
                                     <p className='text-center text-danger'><strong>{getexpenses.reduce((total, item) => Number(item.currentDateExpense), 0)}</strong></p>
                                 )
@@ -101,7 +106,8 @@ const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, 
                     <div className='mb-3 my-2'>
                         <div className='border border-secondary-subtle p-5 bg-white shadow rounded-3'>
                             <h5 className='text-center'> Total Expense </h5>
-                            {!getexpenses || getexpenses.length === "0" ? <p> No data avaliable</p> :
+                            {!getexpenses || getexpenses.length === "0" ? <p className="card-text placeholder-glow">
+                                <span className="placeholder col-12"></span></p> :
                                 (
                                     <p className='text-center text-danger'><strong>{getexpenses.reduce((total, item) => Number(item.totalExpense), 0)}</strong></p>
                                 )
@@ -113,10 +119,19 @@ const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, 
                 <div className='col-md-9'>
                     <div className='border border-secondary-subtle p-2 bg-white overflow-auto shadow rounded-3 table-responsive' id="dategeneration" style={{ height: "calc(100vh - 160px)" }}>
                         <h5 className='text-center'> Details </h5>
-                        {!dategeneration || dategeneration.length === "0" ? <p>No data avaliable</p> :
-                            <table className='table table-bordered border-primary table-striped'>
+                        {!dategeneration || dategeneration.length === "0" ? 
+                        <table className='table table-bordered border-primary table-striped '>
+                            <thead className="card-text placeholder-glow">
+                                <tr className='table-secondary placeholder-glow'>
+                                    <th><span className="placeholder col-12"></span></th>
+                                    <th><span className="placeholder col-12"></span></th>
+                                    <th><span className="placeholder col-12"></span></th>
+                                </tr>
+                            </thead>
+                        </table> :
+                            <table className='table table-bordered border-primary table-striped '>
                                 <thead>
-                                    <tr className='sticky-top table-info'>
+                                    <tr className='table-secondary placeholder-glow'>
                                         <th>Date</th>
                                         <th>Description</th>
                                         <th>Amount</th>
@@ -141,6 +156,8 @@ const Reports = ({ setProgress, dategeneration, getDateGeneration, getExpenses, 
                                 </tbody>
                             </table>
                         }
+
+
                     </div>
                 </div>
             </div>
